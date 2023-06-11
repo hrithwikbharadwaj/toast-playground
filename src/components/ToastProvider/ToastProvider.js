@@ -1,0 +1,39 @@
+import React from "react";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
+
+export const ToastContext = React.createContext();
+
+function ToastProvider({children}) {
+  const [toastItems, setToastItems] = React.useState([]);
+  
+// remove all toasts at once if the user hit's the escape key :)
+  useEscapeKey(React.useCallback(() => {
+    setToastItems([]);
+  }, []));
+ 
+
+  function addToastItems(message, variant){
+    const newToastItem = {
+      message,
+      variant,
+      id: crypto.randomUUID(),
+    };
+    setToastItems([...toastItems, newToastItem]);
+  }
+
+  function removeToastItems(index) {
+    const newToastItems = [...toastItems];
+    newToastItems.splice(index, 1);
+    setToastItems(newToastItems);
+  }
+ 
+  const value = { toastItems, addToastItems, removeToastItems };
+
+  return (
+    <ToastContext.Provider value={value}>
+      {children}
+    </ToastContext.Provider>
+  )
+}
+
+export default ToastProvider;
