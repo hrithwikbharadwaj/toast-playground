@@ -1,5 +1,5 @@
 import React from "react";
-import { useEscapeKey } from "../../hooks/useEscapeKey";
+import useKeyDown from "../../hooks/useKeyDown";
 
 export const ToastContext = React.createContext();
 
@@ -7,7 +7,7 @@ function ToastProvider({children}) {
   const [toastItems, setToastItems] = React.useState([]);
   
 // remove all toasts at once if the user hit's the escape key :)
-  useEscapeKey(React.useCallback(() => {
+  useKeyDown("Escape", React.useCallback(() => {
     setToastItems([]);
   }, []));
  
